@@ -1,0 +1,20 @@
+{
+  "require": {},
+  "plugin_dependencies": {
+    "sand-iam": {
+      "version": "0.8.4",
+      "sha256": "1a3352a6a5556bb8f605e783dd8f66981d5d3436d0af33c053fcb618424e9366"
+    }
+  },
+  "service_catalog": {
+    "service": {
+      "code": "sand_license",
+      "name": "SandLicense"
+    },
+    "actions": {
+      "sand_license.fulfillment.write": "提交商业履约事件",
+      "sand_license.fulfillment.read": "读取商业履约状态",
+      "sand_license.membership.read": "读取业务主体会员权益"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+SandLicense 0.1.0
+
+运行签验复用宿主已有 tinywan/jwt 及其传递依赖 Firebase，
+不包含独立 Composer require/lock/vendor、回退副本或另一 JWT 栈。
+Tinywan 公开登录接口没有 per-call 许可 key/kid/audience/raw claims 入口，
+Security/LeaseToken 和 Security/InstallationProof 消费同一宿主的 JWT / Key / JWK
+公开 API；不修改后台全局配置、登录 Redis 会话或 Firebase 静态配置。
+Tinywan 声明 Firebase ^6.8||^7.0；启动检查此范围、API/EdDSA 及实际类来源。
+当前已验证 tinywan/jwt v1.15.0
+commit bd1943f54e9d5489cd5126210e1da97f3dc40928
+来源 https://github.com/Tinywan/webman-jwt
+及其 firebase/php-jwt v7.1.1
+commit 9bc93bd7e3ee5bead4cd23c365ec12f3c1fb0a6a
+来源 https://github.com/googleapis/php-jwt；其他兼容范围版本尚未实测。
+保留 Firebase BSD-3-Clause 来源声明；实现文件由宿主维护而非此包复制。
+
+宿主能力匹配：控制器/权限/异常直接复用 SandAdmin；请求/响应/Redis 限流
+及 Think/PostgreSQL 直接复用宿主 Webman 能力；身份及服务授权消费 SandIAM
+公开端口。UTC 日期用 PHP DateTimeImmutable。未增加 JWT、Redis、ORM、
+权限或日期库的第二套作者实现；下述 Laravel 项目仅是业务流程移植来源，
+没有安装其 Composer 包或 Laravel/Carbon/PASETO 运行栈。
+
+业务代码移植来源（不引入 Laravel 运行依赖）：
+
+masterix21/laravel-licensing 2.2.1
+commit d304d1cbaa50624bd0731a61500658936cbb7f62
+https://github.com/masterix21/laravel-licensing
+src/Services/UsageRegistrarService.php -> app/SandLicense/Logic/ActivationLogic.php、
+app/SandLicense/Logic/LicensingLogic.php::registerLocked
+src/Services/PasetoTokenService.php -> app/SandLicense/Logic/LeaseLogic.php、
+app/SandLicense/Logic/LicensingLogic.php::leaseLocked
+采用许可锁、同安装重用、席位上限及根据当前许可/安装事实重签的流程；
+本地签发前许可和安装有效窗检查属于安全补强，不冒称上游已完成该验证。
+替换为 Think/PostgreSQL、安装公钥持有证明和 Firebase EdDSA 租约。
+不包含 CA、PASETO、替换席位 fallback 或 Laravel ServiceProvider。
+
+laravelcm/laravel-subscriptions 1.8.0
+commit 68bf992aff33633659aa34ef85d705ba3c074e68
+https://github.com/laravelcm/laravel-subscriptions
+src/Models/Plan.php -> app/SandLicense/Logic/PlanLogic.php
+src/Models/Subscription.php -> app/SandLicense/Logic/MembershipLogic.php
+采用套餐功能/周期、有效期及期末取消流程；
+改为独立来源 grant 固定区间、UTC 月末截断和逐来源退款。
+不移植续期清空旧区间、按到达时间重启周期或非原子用量写法。
+UTC 日期使用原生 DateTimeImmutable，月末截断是本地补强；
+src/Services/Period.php 仅核查其 interval/count/start 周期语义，
+没有移植 Carbon 动态加月代码，不计入上述四个业务文件移植。
+
+完整许可见 THIRD_PARTY_NOTICES。本来源映射不代表真实 PostgreSQL
+事务、并发、HTTP、页面或客户桌面运行已验收；状态见 CHANGELOG。

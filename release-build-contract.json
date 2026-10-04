@@ -1,0 +1,16 @@
+{
+    "schema": "sand-license-runtime-payload-v1",
+    "kind": "reviewed-runtime-payload-inputs",
+    "generated_payloads": {},
+    "host_runtime_dependencies": {
+        "tinywan/jwt": {
+            "provider": "host-existing-stack",
+            "verified_version": "1.15.0"
+        },
+        "firebase/php-jwt": {
+            "provider": "tinywan/jwt-transitive",
+            "compatible_constraint": "^6.8||^7.0",
+            "verified_version": "7.1.1"
+        }
+    }
+}

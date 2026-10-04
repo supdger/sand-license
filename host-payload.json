@@ -1,0 +1,102 @@
+{
+    "schema": 1,
+    "app": "sand-license",
+    "files": [
+        {
+            "path": "app/SandLicense/Controller/ClaimPageController.php",
+            "sha256": "00258f383353d5e40c36b309781fe78f419df892af293a7fa204dea12e36773f"
+        },
+        {
+            "path": "app/SandLicense/Controller/FulfillmentController.php",
+            "sha256": "73a3f27365021dc22e6295f1f4411d83c4dd0b425699ccd58ee69fafcb44b84f"
+        },
+        {
+            "path": "app/SandLicense/Controller/LicenseController.php",
+            "sha256": "219a9d8f05287272d725bff823715931efe74e8bfb4492102e860b9bfba7eb7d"
+        },
+        {
+            "path": "app/SandLicense/Integration/ApplicationReferenceVerifier.php",
+            "sha256": "444c983b23c984eab770cf628f0bc274166f2553f57077251f1491b493cd948c"
+        },
+        {
+            "path": "app/SandLicense/Integration/ProductInvocationFacts.php",
+            "sha256": "4a9197ecce9e3c6c25306007df180f4fc9236ffdd0590475d36374c7ade9b937"
+        },
+        {
+            "path": "app/SandLicense/Integration/RuntimeFactory.php",
+            "sha256": "2f074f9a30a8b572d8e15a349475d446bef1361cfad3ea42e5f10998c5369446"
+        },
+        {
+            "path": "app/SandLicense/Integration/SandIamAuthorization.php",
+            "sha256": "1dbb9991cf0c421e7c490642a89cf3dcdd25e7e9b04fd1b5f6c38b458a4261d8"
+        },
+        {
+            "path": "app/SandLicense/Logic/ActivationLogic.php",
+            "sha256": "c83309065cb1f52c313b93de4d1d13627633d0b67e39ae9d46a5f464df76ac29"
+        },
+        {
+            "path": "app/SandLicense/Logic/AdminLogic.php",
+            "sha256": "0aab2a4275217603bddd915979c56bac1337d7a9665bd8ca1dd967dc048da206"
+        },
+        {
+            "path": "app/SandLicense/Logic/CodeLogic.php",
+            "sha256": "61a6ab5bb6c5f141f6cdd5bbe4e6ed90f8c0391045813046b5a89a797aa35a6d"
+        },
+        {
+            "path": "app/SandLicense/Logic/EnrollmentLogic.php",
+            "sha256": "3dc9d8b8ecf34282a2be489b669784683dd95cb07d45465edaf2af9647580a0f"
+        },
+        {
+            "path": "app/SandLicense/Logic/FulfillmentLogic.php",
+            "sha256": "f4dbccbabfb5bfc110e97ef4a72162304901a744813314f62a112429da76dd40"
+        },
+        {
+            "path": "app/SandLicense/Logic/LeaseLogic.php",
+            "sha256": "dbc9801d8236a5bedf7a9d8af64e9bad5555df473c80817d33ae76734fdaf1af"
+        },
+        {
+            "path": "app/SandLicense/Logic/LicensingLogic.php",
+            "sha256": "bebec996eaf1297148b8decf687823ab627a0484838e1a44ef6b8cd71cc14748"
+        },
+        {
+            "path": "app/SandLicense/Logic/MembershipLogic.php",
+            "sha256": "d4d032f2d04ea869b7dafc6ee6e92a492ebead28a5dbf366ee590bc02c468c16"
+        },
+        {
+            "path": "app/SandLicense/Logic/PlanLogic.php",
+            "sha256": "1f0dbbbdf23d3d2b48b5dbd51a1dff3708efe9eb1dde904f951bdaab1748b363"
+        },
+        {
+            "path": "app/SandLicense/Logic/ProductLogic.php",
+            "sha256": "9dd4e71c9249d4fc8f8379260e9a20ba68d38ca0c9495197c1ad36154ccefd06"
+        },
+        {
+            "path": "app/SandLicense/Logic/Records.php",
+            "sha256": "72b68b62a35c281f7ad4a669049ed4de1ffad1cae70c2c6061fecc112672c50d"
+        },
+        {
+            "path": "app/SandLicense/Logic/Values.php",
+            "sha256": "7d9d1131040feb31ff42a52f27e61f82ac6a38e710c9bbd198217e6b4ad02c51"
+        },
+        {
+            "path": "app/SandLicense/Security/Challenge.php",
+            "sha256": "e79593f373a875fa5128c74eb71150d84750690a1713d7967c9838647ba14296"
+        },
+        {
+            "path": "app/SandLicense/Security/InstallationProof.php",
+            "sha256": "0300fcec18c72173876993fb57c89c2fcff09b0dacbc5d33ebf671fb647cac0c"
+        },
+        {
+            "path": "app/SandLicense/Security/LeaseToken.php",
+            "sha256": "f992c5071bda0b839627fbd07a5975ed36354051a3cbf49d2335310f11a877d7"
+        },
+        {
+            "path": "app/SandLicense/Validate/RequestInput.php",
+            "sha256": "5bdddc80e001eba388228e8eb20c0f00777abf8700ef4421a6e57d757ff53649"
+        },
+        {
+            "path": "config/sand_license_runtime.php",
+            "sha256": "c5db2ae2cbc57c0003c36bc37977fd8e9e35ee65b23acf30827af31524c98e80"
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>领取授权码</title>
+    <link rel="stylesheet" href="/license/claim/claim.css" />
+    <script src="/license/claim/claim.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>领取授权码</h1>
+      <p id="product" class="muted"></p>
+      <section aria-live="polite" aria-atomic="true">
+        <h2 id="state">正在核对领取资格</h2>
+        <p id="message">请稍候。</p>
+      </section>
+      <section id="secret-panel" hidden aria-label="本次授权码">
+        <label for="secret">授权码（仅本次显示）</label>
+        <textarea id="secret" rows="3" readonly spellcheck="false"></textarea>
+        <p>请现在复制并保存在安全位置。关闭或刷新页面后无法再次查看。</p>
+        <button id="copy" type="button">复制授权码</button>
+        <p id="copy-result" role="status"></p>
+      </section>
+      <div class="actions">
+        <button id="claim" type="button" hidden>领取授权码</button>
+        <button id="reissue" type="button" hidden>重新签发授权码</button>
+        <button id="refresh" class="secondary" type="button" hidden>重新查询状态</button>
+      </div>
+      <section id="confirmation" hidden aria-label="确认重新签发">
+        <h2>旧授权码将立即失效</h2>
+        <p>仅未兑换的授权码可重新签发。新码也只显示一次，请准备好保存。</p>
+        <div class="actions">
+          <button id="confirm-reissue" type="button">确认废止旧码并签发新码</button>
+          <button id="cancel-reissue" class="secondary" type="button">取消</button>
+        </div>
+      </section>
+      <p class="footnote">
+        本页用于领取已购买的软件许可，不收取费用。请勿将领取链接或授权码转发给他人。
+      </p>
+      <noscript>请启用浏览器 JavaScript 后重新打开原领取链接。</noscript>
+    </main>
+  </body>
+</html>

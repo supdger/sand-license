@@ -18,7 +18,14 @@ try {
         || !hash_equals($config['plugin_dependencies']['sand-iam']['sha256'], (string) hash_file('sha256', $iam))) {
         throw new RuntimeException('SandIAM 0.8.4 依赖包缺失或摘要不符，请提供锁定公开工件');
     }
-    $target = rtrim((string) realpath($output), '/') . '/sand-license-0.1.0.zip';
+    $metadata = parse_ini_file($root . '/info.ini', false, INI_SCANNER_RAW);
+    $runtime = require $root . '/plugin/sand-license/config/app.php';
+    $version = $metadata['version'] ?? null;
+    if (!is_string($version) || preg_match('/^\d+\.\d+\.\d+$/D', $version) !== 1
+        || ($runtime['version'] ?? null) !== $version) {
+        throw new RuntimeException('根元数据与运行版本必须一致并为三段版本号');
+    }
+    $target = rtrim((string) realpath($output), '/') . '/sand-license-' . $version . '.zip';
     if (file_exists($target) || is_link($target)) throw new RuntimeException('输出包已存在，拒绝覆盖；请选择新输出目录');
     echo "步骤 1/3：核对源码清单和固定依赖\n";
     $manifest = json_decode((string) file_get_contents($root . '/host-payload.json'), true, 32, JSON_THROW_ON_ERROR);

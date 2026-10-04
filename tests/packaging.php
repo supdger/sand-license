@@ -7,10 +7,13 @@ require __DIR__ . '/bootstrap.php';
 use plugin\sandpackage\app\service\HostPayloadManifest;
 use plugin\sandpackage\app\service\PluginDependencyPolicy;
 use plugin\sandpackage\app\service\PluginServiceCatalogPolicy;
+use plugin\sandpackage\app\service\PostgresLifecycleSqlExecutor;
+use plugin\sandpackage\app\service\AbnormalPluginCleanup;
+use plugin\sandpackage\app\logic\LegacyInstallLogic;
 
 $path = $argv[1] ?? '';
 $zip = new ZipArchive();
-if ($path === '' || $zip->open($path) !== true) throw new RuntimeException('Usage: php tests/packaging.php /path/sand-license-0.1.0.zip');
+if ($path === '' || $zip->open($path) !== true) throw new RuntimeException('Usage: php tests/packaging.php /path/sand-license-VERSION.zip');
 echo "步骤 1/3：调用真实 SandPackage HostPayloadManifest\n";
 $host = HostPayloadManifest::inspectArchive($zip, 'sand-license');
 licenseAssert(count($host) > 10, 'Shared runtime kernel is not included');
@@ -20,6 +23,46 @@ foreach (['info.ini','config.json','install.sql','update.sql','uninstall.sql','R
 foreach (['docs/client-integration.md','examples/php-client/LicenseClient.php','examples/php-client/run.php','examples/php-client/live-test.php'] as $file) {
     licenseAssert($zip->locateName($file) !== false, 'Missing consumable client protocol/CLI: ' . $file);
 }
+foreach (['product','plan','code','entitlement','activation','sku-mapping','fulfillment','membership','event'] as $resource) {
+    licenseAssert($zip->locateName('sandadmin-artd/src/views/plugin/sand-license/' . $resource . '/index.vue') !== false,
+        'Missing independent management page: ' . $resource);
+}
+$installSql = (string) $zip->getFromName('install.sql');
+$updateSql = (string) $zip->getFromName('update.sql');
+$uninstallSql = (string) $zip->getFromName('uninstall.sql');
+$installer = (new ReflectionClass(LegacyInstallLogic::class))->newInstanceWithoutConstructor();
+$metadata = (new ReflectionMethod(LegacyInstallLogic::class, 'readUploadArchiveMetadata'))->invoke($installer, $path);
+$info = parse_ini_string((string) $zip->getFromName('info.ini'), false, INI_SCANNER_TYPED);
+licenseAssert(($metadata['app'] ?? null) === 'sand-license'
+    && ($info['version'] ?? null) === '0.1.1'
+    && version_compare((string) $info['version'], '0.1.0', '>'),
+    'Actual package metadata is not an upgrade from published 0.1.0');
+licenseAssert(str_contains((string) $zip->getFromName('plugin/sand-license/config/app.php'), "'version' => '0.1.1'"),
+    'Runtime version differs from upgrade metadata');
+licenseAssert(!preg_match('/\b(?:CREATE|ALTER|DROP)\s+(?:TABLE|DATABASE|SCHEMA)\b/i', $updateSql),
+    'Navigation upgrade must not replay or change business schema');
+foreach ([$installSql, $updateSql] as $sql) {
+    $statements = PostgresLifecycleSqlExecutor::split($sql);
+    licenseAssert(count(array_filter($statements, static fn (string $statement): bool =>
+        str_contains($statement, 'DO $sand_license_menu$') && str_contains($statement, 'SandLicenseProduct'))) === 1,
+        'Actual PostgreSQL parser split the menu dollar body');
+}
+// Read the provider's real declaration parser without opening a database or
+// invoking cleanup. The only PDO operation it needs here is literal quoting.
+$cleanupType = new ReflectionClass(AbnormalPluginCleanup::class);
+$cleanup = $cleanupType->newInstanceWithoutConstructor();
+$cleanupType->getProperty('app')->setValue($cleanup, 'sand-license');
+$cleanupType->getProperty('pdo')->setValue($cleanup, new class {
+    public function quote(string $value): string { return "'" . str_replace("'", "''", $value) . "'"; }
+});
+$declaration = $cleanupType->getMethod('parseDeclaration')->invoke($cleanup, $installSql, $uninstallSql);
+licenseAssert(count($declaration['tables']) === 15 && $declaration['unproven_tables'] === [],
+    'Actual abnormal-cleanup parser cannot prove table ownership');
+foreach (['Product','Plan','Code','Entitlement','Activation','SkuMapping','Fulfillment','Membership','Event'] as $page) {
+    licenseAssert(str_contains($declaration['menu_condition'], "code = 'SandLicense{$page}'"),
+        'Actual cleanup parser omitted independent page: ' . $page);
+}
+echo "真实生命周期 splitter/异常清理声明 parser：九页面与十五表范围通过；未连接数据库或执行 SQL。\n";
 licenseAssert($zip->locateName('examples/php-client/tests.php') === false, 'Source-only client test must not be delivered as runtime');
 $config = json_decode((string) $zip->getFromName('config.json'), true, 32, JSON_THROW_ON_ERROR);
 licenseAssert(PluginDependencyPolicy::requirements($config, 'sand-license') === ['sand-iam' => '0.8.4'], 'Real dependency policy rejected identity');

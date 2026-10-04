@@ -14,7 +14,7 @@ if ($path === '' || $zip->open($path) !== true) throw new RuntimeException('Usag
 echo "步骤 1/3：调用真实 SandPackage HostPayloadManifest\n";
 $host = HostPayloadManifest::inspectArchive($zip, 'sand-license');
 licenseAssert(count($host) > 10, 'Shared runtime kernel is not included');
-foreach (['info.ini','config.json','install.sql','update.sql','uninstall.sql','README.md','LICENSE','NOTICE','THIRD_PARTY_NOTICES','host-payload.json','release-build-contract.json','plugin/sand-license/app/Bootstrap.php','plugin/sand-license/public/claim/index.html','plugin/sand-license/public/claim/claim.js','plugin/sand-license/public/claim/claim.css','sandadmin-artd/src/views/plugin/sand-license/index/index.vue'] as $file) {
+foreach (['info.ini','config.json','install.sql','update.sql','uninstall.sql','README.md','SOURCE_OF_TRUTH.md','LICENSE','NOTICE','THIRD_PARTY_NOTICES','host-payload.json','release-build-contract.json','plugin/sand-license/app/Bootstrap.php','plugin/sand-license/public/claim/index.html','plugin/sand-license/public/claim/claim.js','plugin/sand-license/public/claim/claim.css','sandadmin-artd/src/views/plugin/sand-license/index/index.vue'] as $file) {
     licenseAssert($zip->locateName($file) !== false, 'Missing advertised deliverable: ' . $file);
 }
 foreach (['docs/client-integration.md','examples/php-client/LicenseClient.php','examples/php-client/run.php','examples/php-client/live-test.php'] as $file) {

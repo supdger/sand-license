@@ -44,7 +44,7 @@ try {
             $files[$relative] = $entry->getPathname();
         }
     }
-    foreach (['info.ini', 'config.json', 'install.sql', 'update.sql', 'uninstall.sql', 'README.md', 'CHANGELOG.md', 'LICENSE', 'NOTICE', 'THIRD_PARTY_NOTICES', 'host-payload.json', 'release-build-contract.json'] as $name) {
+    foreach (['info.ini', 'config.json', 'install.sql', 'update.sql', 'uninstall.sql', 'README.md', 'CHANGELOG.md', 'SOURCE_OF_TRUTH.md', 'LICENSE', 'NOTICE', 'THIRD_PARTY_NOTICES', 'host-payload.json', 'release-build-contract.json'] as $name) {
         if (!is_file($root . '/' . $name) || is_link($root . '/' . $name)) throw new RuntimeException('缺少根文件：' . $name);
         $files[$name] = $root . '/' . $name;
     }

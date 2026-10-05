@@ -2,7 +2,7 @@
 
 SandLicense 是 SandAdmin 的商业许可插件，用于集中管理多个软件产品的授权码、设备许可和会员权益。在一个宿主安装一次，再为每个产品创建记录和套餐。软件许可从首次兑换起算，启动须联网，运行租约最长十五分钟；会员权益按业务主体及已付周期管理，不使用卡密或设备绑定。
 
-当前版本 **0.1.1**。升级与限制见[更新日志](CHANGELOG.md)，安装包及摘要见 [Releases](https://github.com/supdger/sand-license/releases)。客户开发者可直接阅读[客户端接入](docs/client-integration.md)。
+当前版本 **0.1.2**。升级与限制见[更新日志](CHANGELOG.md)，安装包及摘要见 [Releases](https://github.com/supdger/sand-license/releases)。客户开发者可直接阅读[客户端接入](docs/client-integration.md)。
 
 ## 安装
 
@@ -14,9 +14,9 @@ SandLicense 是 SandAdmin 的商业许可插件，用于集中管理多个软件
 
 在 SandAdmin 的插件管理页面进入“插件仓库”，点击“刷新仓库”，搜索 **SandLicense**，选择推荐版本并点击“直接安装”，按提示完成标准安装及依赖、管理端构建。官方目录来源为 [supdger/sandadmin 的 main](https://github.com/supdger/sandadmin/blob/main/catalog.json)。安装会在现有数据库执行插件 SQL，不会创建数据库。
 
-以插件管理显示“已安装”为安装完成结果；完成管理端构建后，有权限的账号应能进入“商业授权”下的对应业务模块。从 0.1.0 升级后，业务模块在左侧菜单独立显示；旧地址按账号已有列表权限跳转，升级影响见[更新日志](CHANGELOG.md)。看不到菜单或显示暂无可访问功能时，请管理员核对角色权限与组织范围；安装不会自动创建组织、应用、凭证或服务授权。
+以插件管理显示“已安装”为安装完成结果；完成管理端构建后，有权限的账号应能进入“商业授权”下的对应业务模块。从 0.1.0 升级后，业务模块在左侧菜单独立显示；旧地址按账号已有列表权限跳转，升级影响见[更新日志](CHANGELOG.md)。0.1.2 修正混合及双列布局的目录路由，升级后从菜单重新进入；旧 `/plugin/sand-license/*` 页面书签须更新。看不到菜单或显示暂无可访问功能时，请管理员核对角色权限与组织范围；安装不会自动创建组织、应用、凭证或服务授权。
 
-在线目录不可用时，从 [v0.1.1 Release](https://github.com/supdger/sand-license/releases/tag/v0.1.1) 下载 `sand-license-0.1.1.zip` 与 `SHA256SUMS`，核对摘要后，在同一页面点击“上传插件包”并继续标准安装。安装用户不需要克隆源码或自行构包。
+在线目录不可用时，从 [v0.1.2 Release](https://github.com/supdger/sand-license/releases/tag/v0.1.2) 下载 `sand-license-0.1.2.zip` 与 `SHA256SUMS`，核对摘要后，在同一页面点击“上传插件包”并继续标准安装。安装用户不需要克隆源码或自行构包。
 
 兼容声明为 `>=0.1.0`，没有隐式上限；当前隔离实测组合为 PHP 8.2.29、Core 0.2.0 / Package 0.2.1、Tinywan 1.15.0 / Firebase 7.1.1，其他组合尚未全部实测。服务器秘密文件检查仅实现 POSIX 路径与权限，Windows 服务端 ACL 尚未实现或验证。
 
@@ -107,7 +107,7 @@ sodium_memzero($secret);
 export SAND_LICENSE_TEST_HOST_AUTOLOAD=/实际宿主/server/vendor/autoload.php
 php tests/api_adapter.php
 php tools/build-package.php --output=/已建输出目录 --iam-bundle=/路径/sand-iam-0.8.4.zip
-php tests/packaging.php /已建输出目录/sand-license-0.1.1.zip
+php tests/packaging.php /已建输出目录/sand-license-0.1.2.zip
 ```
 
 SandIAM 工件 SHA-256 必须为 `1a3352a6a5556bb8f605e783dd8f66981d5d3436d0af33c053fcb618424e9366`。已有输出或载荷摘要变化会拒绝覆盖；正式发布使用 clean 已提交源码。更多测试及各自前置输入见 [tests/](tests/)，构包与清单入口见 [tools/](tools/)；客户端专用 TLS 验收见[客户端接入](docs/client-integration.md#验证层次)。测试不会代为安装宿主或 IAM，包检查不执行安装及 SQL。

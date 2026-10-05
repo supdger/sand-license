@@ -32,13 +32,18 @@ $menuBlock = static function (string $sql): string {
 };
 $menus = $menuBlock($install);
 if ($menus !== $menuBlock($update)) throw new RuntimeException('Install/update menu contract differs');
-if (!str_contains($menus, "1,'/plugin/sand-license'")
+if (!str_contains($menus, "1,'/sand-license'")
     || !str_contains($menus, "2,'index','/plugin/sand-license/index/index'")
     || !str_contains($menus, 'RETURNING id INTO root_id')
     || !str_contains($menus, 'RETURNING id INTO page_id')
     || !str_contains($menus, 'RETURNING id INTO permission_id')
     || !str_contains($menus, 'RETURNING id INTO center_id')) {
     throw new RuntimeException('Menu paths/dynamic IDs contract missing');
+}
+if (!str_contains($menus, "path IN ('/sand-license','/plugin/sand-license')")
+    || !str_contains($menus, "path='/sand-license' AND id<>root_id AND parent_id=0")
+    || !str_contains($menus, "WHERE id=root_id AND path='/plugin/sand-license';")) {
+    throw new RuntimeException('Legacy root route upgrade/collision guard missing');
 }
 $pages = [
     'Product' => 'product', 'Plan' => 'plan', 'Code' => 'code',

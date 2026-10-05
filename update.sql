@@ -17,11 +17,18 @@ BEGIN
  IF row_count > 1 THEN RAISE EXCEPTION 'SandLicense menu root is duplicated'; END IF;
  IF row_count = 0 THEN
   INSERT INTO sand_system_menu (parent_id,name,code,slug,type,path,component,icon,sort,is_hidden,status,create_time,update_time)
-  VALUES (0,'商业授权','SandLicense','',1,'/plugin/sand-license','','ri:key-2-line',95,2,1,CURRENT_TIMESTAMP AT TIME ZONE 'UTC',CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
+  VALUES (0,'商业授权','SandLicense','',1,'/sand-license','','ri:key-2-line',95,2,1,CURRENT_TIMESTAMP AT TIME ZONE 'UTC',CURRENT_TIMESTAMP AT TIME ZONE 'UTC')
   RETURNING id INTO root_id;
- ELSIF NOT EXISTS (SELECT 1 FROM sand_system_menu WHERE id=root_id AND parent_id=0 AND type=1 AND path='/plugin/sand-license' AND component='' AND slug='' AND delete_time IS NULL) THEN
+ ELSIF NOT EXISTS (SELECT 1 FROM sand_system_menu WHERE id=root_id AND parent_id=0 AND type=1 AND path IN ('/sand-license','/plugin/sand-license') AND component='' AND slug='' AND delete_time IS NULL) THEN
   RAISE EXCEPTION 'SandLicense root menu ownership conflicts';
  END IF;
+ -- Mixed/dual menus resolve the top-level route by its first segment.
+ IF EXISTS (SELECT 1 FROM sand_system_menu WHERE path='/sand-license' AND id<>root_id AND parent_id=0 AND delete_time IS NULL) THEN
+  RAISE EXCEPTION 'SandLicense root route is already owned by another menu';
+ END IF;
+ -- Preserve the existing root ID, disabled state and role links during legacy upgrades.
+ UPDATE sand_system_menu SET path='/sand-license',update_time=CURRENT_TIMESTAMP AT TIME ZONE 'UTC'
+ WHERE id=root_id AND path='/plugin/sand-license';
  SELECT count(*), min(id) INTO row_count, center_id FROM sand_system_menu WHERE code = 'SandLicenseCenter';
  IF row_count > 1 THEN RAISE EXCEPTION 'SandLicense center menu is duplicated'; END IF;
  IF row_count = 0 THEN

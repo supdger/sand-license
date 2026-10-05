@@ -34,10 +34,10 @@ $installer = (new ReflectionClass(LegacyInstallLogic::class))->newInstanceWithou
 $metadata = (new ReflectionMethod(LegacyInstallLogic::class, 'readUploadArchiveMetadata'))->invoke($installer, $path);
 $info = parse_ini_string((string) $zip->getFromName('info.ini'), false, INI_SCANNER_TYPED);
 licenseAssert(($metadata['app'] ?? null) === 'sand-license'
-    && ($info['version'] ?? null) === '0.1.1'
+    && ($info['version'] ?? null) === '0.1.2'
     && version_compare((string) $info['version'], '0.1.0', '>'),
     'Actual package metadata is not an upgrade from published 0.1.0');
-licenseAssert(str_contains((string) $zip->getFromName('plugin/sand-license/config/app.php'), "'version' => '0.1.1'"),
+licenseAssert(str_contains((string) $zip->getFromName('plugin/sand-license/config/app.php'), "'version' => '0.1.2'"),
     'Runtime version differs from upgrade metadata');
 licenseAssert(!preg_match('/\b(?:CREATE|ALTER|DROP)\s+(?:TABLE|DATABASE|SCHEMA)\b/i', $updateSql),
     'Navigation upgrade must not replay or change business schema');

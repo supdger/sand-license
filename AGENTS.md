@@ -15,7 +15,7 @@ PostgreSQL only；业务表仅 `sand_license_*`。身份、应用、凭证、服
 - `config/sand_license_runtime.php`：运行时配置；`config.json`：依赖声明（plugin_dependencies 固定 sand-iam 0.8.4 + service_catalog）
 - `sandadmin-artd/src/views/`：管理端 Vue/TS 视图
 - `scripts/`：提交前检查（`install-pre-commit-checks.sh`、`check-staged-plugin-support.py`）
-- `tests/`：13 个 PHP 检查/行为测试 + `fixtures/`；`tools/`：`refresh-manifests.php`、`build-package.php`
+- `tests/`：12 个顶层 PHP 检查/行为测试 + `fixtures/`（含辅助 PHP）；`tools/`：`refresh-manifests.php`、`build-package.php`
 - `examples/php-client/`、`docs/client-integration.md`：客户端接入
 - 根 `install/update/uninstall.sql`、`host-payload.json`、`release-build-contract.json`、`info.ini`
 
@@ -56,7 +56,7 @@ PostgreSQL only；业务表仅 `sand_license_*`。身份、应用、凭证、服
 
 - `scripts/install-pre-commit-checks.sh`：接入提交前检查（需 `QUALITY_CHECKER` 指向 scan_change_quality.py；已有自定义 hooksPath 时拒绝接管）
 - `python3 scripts/check-staged-plugin-support.py`：校验实际 index 的插件元数据
-- `php tests/<name>.php`：13 个测试脚本；`tests/api_adapter.php` 等需 `SAND_LICENSE_TEST_HOST_AUTOLOAD` 指向宿主 autoload
+- `php tests/<name>.php`：逐个运行测试脚本；`tests/api_adapter.php` 等需 `SAND_LICENSE_TEST_HOST_AUTOLOAD` 指向宿主 autoload
 - `php tests/packaging.php <输出目录>`、`php tools/refresh-manifests.php`、`php tools/build-package.php`
 - 仓内无 CI 配置；宿主级安装/升级/业务闭环验证需隔离环境并获授权
 

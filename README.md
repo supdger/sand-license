@@ -150,3 +150,7 @@ Authorization: Bearer <SandIAM 签发的服务上下文>
 设备释放或重置须由有权限的使用者明确操作，重置需理由；旧设备立即不能续签，席位等最后租约到期才能重用。
 
 问题反馈：[GitHub Issues](https://github.com/supdger/sand-license/issues)，请提供版本、操作及已脱敏错误，不附卡密、凭证或秘密响应。源码来源见[来源记录](SOURCE_OF_TRUTH.md)，开源许可见 [LICENSE](LICENSE)，第三方版本与许可见 [NOTICE](NOTICE)。
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE) 开源许可，版权归青岛沙盒创意网络科技有限公司所有。第三方移植与依赖的许可见 [NOTICE](NOTICE) 与 [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES)。

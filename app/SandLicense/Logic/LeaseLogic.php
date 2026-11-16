@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace app\SandLicense\Logic;
 
-/** masterix 2.2.1 refresh/re-sign flow; explicit state/window checks are local hardening. */
+/**
+ * Adapted from masterix21/laravel-licensing v2.2.1:
+ * src/Services/PasetoTokenService.php, commit d304d1cbaa50624bd0731a61500658936cbb7f62.
+ * Copyright (c) Luca Longo <l.longo@ambita.it>. MIT; see THIRD_PARTY_NOTICES.
+ * Refresh/re-sign flow; explicit state/window checks are local hardening.
+ */
 final class LeaseLogic
 {
     public static function assertActive(array $entitlement, ?array $activation, int $now): void

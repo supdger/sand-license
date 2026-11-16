@@ -9,7 +9,14 @@ use app\SandLicense\Security\InstallationProof;
 use app\SandLicense\Security\LeaseToken;
 use think\facade\Db;
 
-/** The single desktop business path; all writes use the host's existing Think transaction layer. */
+/**
+ * Adapted from masterix21/laravel-licensing v2.2.1:
+ * src/Services/UsageRegistrarService.php (registerLocked) and
+ * src/Services/PasetoTokenService.php (leaseLocked),
+ * commit d304d1cbaa50624bd0731a61500658936cbb7f62.
+ * Copyright (c) Luca Longo <l.longo@ambita.it>. MIT; see THIRD_PARTY_NOTICES.
+ * The single desktop business path; all writes use the host's existing Think transaction layer.
+ */
 final class LicensingLogic
 {
     public function __construct(
